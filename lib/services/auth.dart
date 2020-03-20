@@ -6,11 +6,11 @@ import 'dart:async';
 class AuthService{
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _db = Firestore.instance();
+  final Firestore _db = Firestore.instance;
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
 
-  Stream<FirebaseUser> get user => _auth.onAuthStateChanged();
+  Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
   Future<FirebaseUser> anonLogin() async {
     FirebaseUser user = await _auth.signInAnonymously();
