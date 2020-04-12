@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
-class AuthService{
+class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
@@ -12,16 +12,11 @@ class AuthService{
 
   Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
-  Future<FirebaseUser> anonLogin() async {
-    FirebaseUser user = await _auth.signInAnonymously();
-    updateUserData(user);
-    return user;
-  }  
-
   Future<FirebaseUser> googleSignIn() async {
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
@@ -36,7 +31,13 @@ class AuthService{
       print(error);
       return null;
     }
-  }  
+  }
+
+  Future<FirebaseUser> anonLogin() async {
+    FirebaseUser user = await _auth.signInAnonymously();
+    updateUserData(user);
+    return user;
+  }
 
   Future<void> updateUserData(FirebaseUser user) {
     DocumentReference reportRef = _db.collection('reports').document(user.uid);
@@ -53,5 +54,3 @@ class AuthService{
   }
 
 }
-
-
